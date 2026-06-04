@@ -40,7 +40,7 @@ export default class BaseHttpClient {
         }
     }
 
-    setcookies(cookies: string[] | string, host?: string): string {
+    async setcookies(cookies: string[] | string, host?: string): Promise<string> {
         let temp = Array.isArray(cookies) ? resolve_cookies(cookies) : cookies;
         if (this.cookies.trim() !== "") {
             let oldcookies = this.cookies.split("; ");
@@ -76,7 +76,7 @@ export default class BaseHttpClient {
         const validateStatus = validate ?? (() => true);
         const response = await this._client.get(url, { headers: this._getheaders(headers), validateStatus, signal: this._signal.signal });
         const cookies = response.headers["set-cookie"];
-        if (cookies) this.setcookies(cookies, new URL(url).host);
+        if (cookies) await this.setcookies(cookies, new URL(url).host);
         return response;
     }
 
@@ -84,7 +84,7 @@ export default class BaseHttpClient {
         const validateStatus = validate ?? (() => true);
         const response = await this._client.post(url, data, { headers: this._getheaders(headers), validateStatus, signal: this._signal.signal });
         const cookies = response.headers["set-cookie"];
-        if (cookies) this.setcookies(cookies, new URL(url).host);
+        if (cookies) await this.setcookies(cookies, new URL(url).host);
         return response;
     }
 

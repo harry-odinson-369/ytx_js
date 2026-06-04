@@ -1,6 +1,6 @@
 import BaseHttpClient, { HttpValidateStatus } from "./base";
 import fs from "fs";
-import fsPromise from "fs/promises";
+import fspromise from "fs/promises";
 import path from "path";
 import { retry } from "../utils/utils";
 import { AxiosResponse } from "axios";
@@ -9,6 +9,8 @@ export default class YoutubeHttpClient extends BaseHttpClient {
     constructor() {
         super(undefined, undefined, YoutubeHttpClient.defaultheaders);
     }
+
+    isCookieLoaded: boolean = false;
 
     static get defaultheaders(): Record<string, string> {
         return {
@@ -47,14 +49,38 @@ export default class YoutubeHttpClient extends BaseHttpClient {
         });
     }
 
+    private async loadcookies(): Promise<void> {
+        if (this.isCookieLoaded) return;
+        if (fs.existsSync(this.cookiesfile())) {
+            const result = await fspromise.readFile(this.cookiesfile(), 'utf-8');
+            await super.setcookies(result, 'www.youtube.com');
+        }
+        this.isCookieLoaded = true;
+    }
+
     get cwd(): string { return path.join(process.cwd(), '.cookies'); }
     cookiesfile(host?: string): string { return path.join(this.cwd, (host ?? 'www.youtube.com')); }
 
-    override setcookies(cookies: string[] | string, host?: string): string {
-        const result = super.setcookies(cookies, host);
+    override async setcookies(cookies: string[] | string, host?: string): Promise<string> {
+        const result = await super.setcookies(cookies, host);
         if (!fs.existsSync(this.cwd)) fs.mkdirSync(this.cwd, { recursive: true });
-        fs.writeFile(this.cookiesfile(host), result, () => { });
+        await fspromise.writeFile(this.cookiesfile(host), result);
         return result;
+    }
+
+    override async head(url: string, headers?: Record<string, any> | null, validate?: HttpValidateStatus): Promise<AxiosResponse> {
+        await this.loadcookies();
+        return super.head(url, headers, validate);
+    }
+
+    override async get(url: string, headers?: Record<string, any> | null, validate?: HttpValidateStatus): Promise<AxiosResponse> {
+        await this.loadcookies();
+        return super.get(url, headers, validate);
+    }
+
+    override async post(url: string, data?: any, headers?: Record<string, any> | null, validate?: HttpValidateStatus): Promise<AxiosResponse> {
+        await this.loadcookies();
+        return super.post(url, data, headers, validate);
     }
 
 }

@@ -3,6 +3,9 @@ import YoutubeHttpClient from "./clients/youtube";
 import { getvideoid } from "./utils/url";
 import PageAPI from "./videos/page";
 import { VideoInfo } from "./videos/video_info";
+import StreamsAPI from "./videos/streams";
+
+export { BaseHttpClient, YoutubeHttpClient, PageAPI, StreamsAPI }
 
 export default class YTXJS {
     constructor(public client: BaseHttpClient) { }
@@ -23,5 +26,9 @@ export default class YTXJS {
     async VIDEO_INFO(input: string): Promise<VideoInfo> {
         const page = await PageAPI.request(this.client, getvideoid(input));
         return VideoInfo.frompage(page);
+    }
+
+    CLOSE() {
+        this.client.close();
     }
 }

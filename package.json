@@ -1,6 +1,6 @@
 {
   "name": "ytx_js",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A Youtube downloader.",
   "repository": {
     "type": "git",
@@ -23,13 +23,6 @@
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "license": "ISC",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "devDependencies": {
     "@types/node": "^25.9.1",
     "nodemon": "^3.1.14",

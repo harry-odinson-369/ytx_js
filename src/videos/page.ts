@@ -4,7 +4,6 @@ import { extractgenericdata, extractjson, resolve_cookies, retry, stripNoneDigit
 import { PlayerResponse } from "./player_response";
 import PlayerConfig from "./player_config";
 import InitialData from "./initial_data";
-import { writeFile } from "fs";
 
 export default class PageAPI {
 
@@ -110,7 +109,6 @@ export default class PageAPI {
     static async request(client: BaseHttpClient, videoId: string): Promise<PageAPI> {
         return retry(client, async () => {
             const response = await client.get(PageAPI.resolve_url(videoId));
-            writeFile('resp.json', JSON.stringify(response?.headers), () => {});
             if (!response) throw "Unexpected error occurred while fetching watch page!";
             if (response.status !== 200) throw 'Failed to fetch watch page!';
             const html = typeof response?.data === 'string' ? response?.data : JSON.stringify(response.data);
