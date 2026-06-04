@@ -1,0 +1,42 @@
+{
+  "name": "ytx_js",
+  "version": "1.0.0",
+  "description": "A Youtube downloader.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harry-odinson-369/ytx_js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon test.ts",
+    "start": "tsc --build && node ./dist/test.js",
+    "build": "tsup"
+  },
+  "keywords": [
+    "youtube",
+    "downloader",
+    "helper",
+    "tool"
+  ],
+  "author": "harryodinson",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@xmldom/xmldom": "^0.9.10",
+    "axios": "^1.16.1",
+    "node-html-parser": "^7.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/harry-odinson-369/ytx_js/issues"
+  },
+  "homepage": "https://github.com/harry-odinson-369/ytx_js#readme"
+}

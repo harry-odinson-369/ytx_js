@@ -1,0 +1,14 @@
+/src
+/node_modules
+/test
+
+/dist/test.js
+
+test.ts
+.env
+.DS_Store
+.gitignore
+.gitattributes
+
+tsconfig.json
+tsup.config.ts
