@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig({
     format: ['cjs', 'esm'],
-    entry: ['./src'],
+    entry: ['./src/'],
     dts: true,
     shims: true,
     skipNodeModulesBundle: true,
